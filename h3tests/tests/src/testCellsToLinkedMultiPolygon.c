@@ -240,15 +240,15 @@ SUITE(cellsToLinkedMultiPolygon) {
         t_assert(countLinkedPolygons(&polygon) == 2, "Polygon count correct");
         t_assert(countLinkedLoops(&polygon) == 2,
                  "Loop count on first polygon correct");
-        t_assert(countLinkedCoords(polygon.first) == 18,
+        t_assert(countLinkedCoords(polygon.first) == 42,
                  "Got expected outer loop");
-        t_assert(countLinkedCoords(polygon.first->next) == 6,
+        t_assert(countLinkedCoords(polygon.first->next) == 30,
                  "Got expected inner loop");
         t_assert(countLinkedLoops(polygon.next) == 2,
                  "Loop count on second polygon correct");
-        t_assert(countLinkedCoords(polygon.next->first) == 42,
+        t_assert(countLinkedCoords(polygon.next->first) == 18,
                  "Got expected big outer loop");
-        t_assert(countLinkedCoords(polygon.next->first->next) == 30,
+        t_assert(countLinkedCoords(polygon.next->first->next) == 6,
                  "Got expected big inner loop");
 
         destroyLinkedMultiPolygon(&polygon);
@@ -293,8 +293,9 @@ SUITE(cellsToLinkedMultiPolygon) {
         LinkedGeoPolygon polygon;
         H3Index set[] = {0xd60006d60000f100, 0x3c3c403c1300d668};
         int numHexes = ARRAY_SIZE(set);
+
         t_assert(cellsToLinkedMultiPolygon(set, numHexes,
-                                                      &polygon) == E_FAILED,
+                                                      &polygon) == E_CELL_INVALID,
                  "invalid cells fail");
     }
 

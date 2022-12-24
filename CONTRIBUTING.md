@@ -45,6 +45,24 @@ If the required subsection does not exist yet under **Unreleased**, create it!
   cargo clippy --all-targets --all-features
   ```
 
+- Run tests:
+
+  ```shell
+  cd h3oh3o/h3tests
+  mkdir -p build && cd build
+  cmake .. -DCMAKE_BUILD_TYPE=Debug
+  make
+  make test
+  ```
+
+- Run benchmarks:
+
+  ```shell
+  mkdir -p build && cd build
+  cmake .. -DCMAKE_BUILD_TYPE=Release
+  make benchmarks
+  ```
+
 - Check to see if there are code formatting issues
 
   ```shell
