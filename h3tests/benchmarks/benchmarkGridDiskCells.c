@@ -24,21 +24,21 @@ H3Index pentagon = 0x89080000003ffff;
 BEGIN_BENCHMARKS();
 
 int64_t outSz;
-if (H3_EXPORT(maxGridDiskSize)(40, &outSz)) {
+if (maxGridDiskSize(40, &outSz)) {
     printf("Failed\n");
     return 1;
 }
 H3Index *out = calloc(outSz, sizeof(H3Index));
 
-BENCHMARK(gridDisk10, 10000, { H3_EXPORT(gridDisk)(hex, 10, out); });
-BENCHMARK(gridDisk20, 10000, { H3_EXPORT(gridDisk)(hex, 20, out); });
-BENCHMARK(gridDisk30, 10000, { H3_EXPORT(gridDisk)(hex, 30, out); });
-BENCHMARK(gridDisk40, 10000, { H3_EXPORT(gridDisk)(hex, 40, out); });
+BENCHMARK(gridDisk10, 10000, { gridDisk(hex, 10, out); });
+BENCHMARK(gridDisk20, 10000, { gridDisk(hex, 20, out); });
+BENCHMARK(gridDisk30, 10000, { gridDisk(hex, 30, out); });
+BENCHMARK(gridDisk40, 10000, { gridDisk(hex, 40, out); });
 
-BENCHMARK(gridDiskPentagon10, 500, { H3_EXPORT(gridDisk)(pentagon, 10, out); });
-BENCHMARK(gridDiskPentagon20, 500, { H3_EXPORT(gridDisk)(pentagon, 20, out); });
-BENCHMARK(gridDiskPentagon30, 50, { H3_EXPORT(gridDisk)(pentagon, 30, out); });
-BENCHMARK(gridDiskPentagon40, 10, { H3_EXPORT(gridDisk)(pentagon, 40, out); });
+BENCHMARK(gridDiskPentagon10, 500, { gridDisk(pentagon, 10, out); });
+BENCHMARK(gridDiskPentagon20, 500, { gridDisk(pentagon, 20, out); });
+BENCHMARK(gridDiskPentagon30, 50, { gridDisk(pentagon, 30, out); });
+BENCHMARK(gridDiskPentagon40, 10, { gridDisk(pentagon, 40, out); });
 
 free(out);
 

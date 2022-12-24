@@ -12,7 +12,7 @@ macro(add_test_common NAME SRCFILE)
     # Only register the test binary once.
     if(NOT TARGET ${NAME})
         add_executable(${NAME} ${SRCFILE} src/test.c)
-        target_link_libraries(${NAME} PUBLIC h3oh3o::h3oh3o)
+        target_link_libraries(${NAME} PUBLIC h3oh3o::h3oh3o common)
     endif()
 
     math(EXPR TEST_NUMBER "${TEST_NUMBER}+1")

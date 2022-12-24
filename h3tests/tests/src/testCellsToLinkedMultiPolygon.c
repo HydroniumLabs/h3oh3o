@@ -17,6 +17,7 @@
 #include <stdio.h>
 
 #include "algos.h"
+#include "linkedGeo.h"
 #include "test.h"
 #include "utility.h"
 
@@ -24,12 +25,11 @@ SUITE(cellsToLinkedMultiPolygon) {
     TEST(empty) {
         LinkedGeoPolygon polygon;
 
-        t_assertSuccess(
-            H3_EXPORT(cellsToLinkedMultiPolygon)(NULL, 0, &polygon));
+        t_assertSuccess(cellsToLinkedMultiPolygon(NULL, 0, &polygon));
 
         t_assert(countLinkedLoops(&polygon) == 0, "No loops added to polygon");
 
-        H3_EXPORT(destroyLinkedMultiPolygon)(&polygon);
+        destroyLinkedMultiPolygon(&polygon);
     }
 
     TEST(singleHex) {
@@ -37,14 +37,13 @@ SUITE(cellsToLinkedMultiPolygon) {
         H3Index set[] = {0x890dab6220bffff};
         int numHexes = ARRAY_SIZE(set);
 
-        t_assertSuccess(
-            H3_EXPORT(cellsToLinkedMultiPolygon)(set, numHexes, &polygon));
+        t_assertSuccess(cellsToLinkedMultiPolygon(set, numHexes, &polygon));
 
         t_assert(countLinkedLoops(&polygon) == 1, "1 loop added to polygon");
         t_assert(countLinkedCoords(polygon.first) == 6,
                  "6 coords added to loop");
 
-        H3_EXPORT(destroyLinkedMultiPolygon)(&polygon);
+        destroyLinkedMultiPolygon(&polygon);
     }
 
     TEST(invalid) {
@@ -52,7 +51,7 @@ SUITE(cellsToLinkedMultiPolygon) {
         H3Index set[] = {0xfffffffffffffff};
         int numHexes = ARRAY_SIZE(set);
 
-        t_assert(H3_EXPORT(cellsToLinkedMultiPolygon)(
+        t_assert(cellsToLinkedMultiPolygon(
                      set, numHexes, &polygon) == E_CELL_INVALID,
                  "Invalid set fails");
     }
@@ -62,14 +61,13 @@ SUITE(cellsToLinkedMultiPolygon) {
         H3Index set[] = {0x8928308291bffff, 0x89283082957ffff};
         int numHexes = ARRAY_SIZE(set);
 
-        t_assertSuccess(
-            H3_EXPORT(cellsToLinkedMultiPolygon)(set, numHexes, &polygon));
+        t_assertSuccess(cellsToLinkedMultiPolygon(set, numHexes, &polygon));
 
         t_assert(countLinkedLoops(&polygon) == 1, "1 loop added to polygon");
         t_assert(countLinkedCoords(polygon.first) == 10,
                  "All coords added to loop except 2 shared");
 
-        H3_EXPORT(destroyLinkedMultiPolygon)(&polygon);
+        destroyLinkedMultiPolygon(&polygon);
     }
 
     // TODO: This test asserts incorrect behavior - we should be creating
@@ -80,8 +78,7 @@ SUITE(cellsToLinkedMultiPolygon) {
         H3Index set[] = {0x8928308291bffff, 0x89283082943ffff};
         int numHexes = ARRAY_SIZE(set);
 
-        t_assertSuccess(
-            H3_EXPORT(cellsToLinkedMultiPolygon)(set, numHexes, &polygon));
+        t_assertSuccess(cellsToLinkedMultiPolygon(set, numHexes, &polygon));
 
         t_assert(countLinkedPolygons(&polygon) == 2, "2 polygons added");
         t_assert(countLinkedLoops(&polygon) == 1,
@@ -93,7 +90,7 @@ SUITE(cellsToLinkedMultiPolygon) {
         t_assert(countLinkedCoords(polygon.next->first) == 6,
                  "All coords for one hex added to second polygon");
 
-        H3_EXPORT(destroyLinkedMultiPolygon)(&polygon);
+        destroyLinkedMultiPolygon(&polygon);
     }
 
     TEST(contiguous3) {
@@ -102,14 +99,13 @@ SUITE(cellsToLinkedMultiPolygon) {
                          0x8928308289bffff};
         int numHexes = ARRAY_SIZE(set);
 
-        t_assertSuccess(
-            H3_EXPORT(cellsToLinkedMultiPolygon)(set, numHexes, &polygon));
+        t_assertSuccess(cellsToLinkedMultiPolygon(set, numHexes, &polygon));
 
         t_assert(countLinkedLoops(&polygon) == 1, "1 loop added to polygon");
         t_assert(countLinkedCoords(polygon.first) == 12,
                  "All coords added to loop except 6 shared");
 
-        H3_EXPORT(destroyLinkedMultiPolygon)(&polygon);
+        destroyLinkedMultiPolygon(&polygon);
     }
 
     TEST(hole) {
@@ -119,7 +115,7 @@ SUITE(cellsToLinkedMultiPolygon) {
                          0x8928308288fffff, 0x89283082883ffff};
         int numHexes = ARRAY_SIZE(set);
 
-        H3_EXPORT(cellsToLinkedMultiPolygon)(set, numHexes, &polygon);
+        cellsToLinkedMultiPolygon(set, numHexes, &polygon);
 
         t_assert(countLinkedLoops(&polygon) == 2, "2 loops added to polygon");
         t_assert(countLinkedCoords(polygon.first) == 6 * 3,
@@ -127,7 +123,7 @@ SUITE(cellsToLinkedMultiPolygon) {
         t_assert(countLinkedCoords(polygon.first->next) == 6,
                  "All inner coords added to second loop");
 
-        H3_EXPORT(destroyLinkedMultiPolygon)(&polygon);
+        destroyLinkedMultiPolygon(&polygon);
     }
 
     TEST(pentagon) {
@@ -135,14 +131,13 @@ SUITE(cellsToLinkedMultiPolygon) {
         H3Index set[] = {0x851c0003fffffff};
         int numHexes = ARRAY_SIZE(set);
 
-        t_assertSuccess(
-            H3_EXPORT(cellsToLinkedMultiPolygon)(set, numHexes, &polygon));
+        t_assertSuccess(cellsToLinkedMultiPolygon(set, numHexes, &polygon));
 
         t_assert(countLinkedLoops(&polygon) == 1, "1 loop added to polygon");
         t_assert(countLinkedCoords(polygon.first) == 10,
                  "10 coords (distorted pentagon) added to loop");
 
-        H3_EXPORT(destroyLinkedMultiPolygon)(&polygon);
+        destroyLinkedMultiPolygon(&polygon);
     }
 
     TEST(twoRing) {
@@ -158,14 +153,13 @@ SUITE(cellsToLinkedMultiPolygon) {
             0x89300628303ffff};
         int numHexes = ARRAY_SIZE(set);
 
-        t_assertSuccess(
-            H3_EXPORT(cellsToLinkedMultiPolygon)(set, numHexes, &polygon));
+        t_assertSuccess(cellsToLinkedMultiPolygon(set, numHexes, &polygon));
 
         t_assert(countLinkedLoops(&polygon) == 1, "1 loop added to polygon");
         t_assert(countLinkedCoords(polygon.first) == (6 * (2 * 2 + 1)),
                  "Expected number of coords added to loop");
 
-        H3_EXPORT(destroyLinkedMultiPolygon)(&polygon);
+        destroyLinkedMultiPolygon(&polygon);
     }
 
     TEST(twoRingUnordered) {
@@ -181,14 +175,13 @@ SUITE(cellsToLinkedMultiPolygon) {
             0x893006283c7ffff};
         int numHexes = ARRAY_SIZE(set);
 
-        t_assertSuccess(
-            H3_EXPORT(cellsToLinkedMultiPolygon)(set, numHexes, &polygon));
+        t_assertSuccess(cellsToLinkedMultiPolygon(set, numHexes, &polygon));
 
         t_assert(countLinkedLoops(&polygon) == 1, "1 loop added to polygon");
         t_assert(countLinkedCoords(polygon.first) == (6 * (2 * 2 + 1)),
                  "Expected number of coords added to loop");
 
-        H3_EXPORT(destroyLinkedMultiPolygon)(&polygon);
+        destroyLinkedMultiPolygon(&polygon);
     }
 
     TEST(nestedDonut) {
@@ -205,8 +198,7 @@ SUITE(cellsToLinkedMultiPolygon) {
             0x892830828b3ffff, 0x89283082887ffff, 0x89283082883ffff};
         int numHexes = ARRAY_SIZE(set);
 
-        t_assertSuccess(
-            H3_EXPORT(cellsToLinkedMultiPolygon)(set, numHexes, &polygon));
+        t_assertSuccess(cellsToLinkedMultiPolygon(set, numHexes, &polygon));
 
         // Note that the polygon order here is arbitrary, making this test
         // somewhat brittle, but it's difficult to assert correctness otherwise
@@ -224,7 +216,7 @@ SUITE(cellsToLinkedMultiPolygon) {
         t_assert(countLinkedCoords(polygon.next->first->next) == 6,
                  "Got expected inner loop");
 
-        H3_EXPORT(destroyLinkedMultiPolygon)(&polygon);
+        destroyLinkedMultiPolygon(&polygon);
     }
 
     TEST(nestedDonutTransmeridian) {
@@ -241,8 +233,7 @@ SUITE(cellsToLinkedMultiPolygon) {
             0x897eb572287ffff, 0x897eb572283ffff, 0x897eb57229bffff};
         int numHexes = ARRAY_SIZE(set);
 
-        t_assertSuccess(
-            H3_EXPORT(cellsToLinkedMultiPolygon)(set, numHexes, &polygon));
+        t_assertSuccess(cellsToLinkedMultiPolygon(set, numHexes, &polygon));
 
         // Note that the polygon order here is arbitrary, making this test
         // somewhat brittle, but it's difficult to assert correctness otherwise
@@ -260,7 +251,7 @@ SUITE(cellsToLinkedMultiPolygon) {
         t_assert(countLinkedCoords(polygon.next->first->next) == 30,
                  "Got expected big inner loop");
 
-        H3_EXPORT(destroyLinkedMultiPolygon)(&polygon);
+        destroyLinkedMultiPolygon(&polygon);
     }
 
     TEST(contiguous2distorted) {
@@ -268,22 +259,20 @@ SUITE(cellsToLinkedMultiPolygon) {
         H3Index set[] = {0x894cc5365afffff, 0x894cc536537ffff};
         int numHexes = ARRAY_SIZE(set);
 
-        t_assertSuccess(
-            H3_EXPORT(cellsToLinkedMultiPolygon)(set, numHexes, &polygon));
+        t_assertSuccess(cellsToLinkedMultiPolygon(set, numHexes, &polygon));
 
         t_assert(countLinkedLoops(&polygon) == 1, "1 loop added to polygon");
         t_assert(countLinkedCoords(polygon.first) == 12,
                  "All coords added to loop except 2 shared");
 
-        H3_EXPORT(destroyLinkedMultiPolygon)(&polygon);
+        destroyLinkedMultiPolygon(&polygon);
     }
 
     TEST(negativeHashedCoordinates) {
         LinkedGeoPolygon polygon;
         H3Index set[] = {0x88ad36c547fffff, 0x88ad36c467fffff};
         int numHexes = ARRAY_SIZE(set);
-        t_assertSuccess(
-            H3_EXPORT(cellsToLinkedMultiPolygon)(set, numHexes, &polygon));
+        t_assertSuccess(cellsToLinkedMultiPolygon(set, numHexes, &polygon));
 
         t_assert(countLinkedPolygons(&polygon) == 2, "2 polygons added");
         t_assert(countLinkedLoops(&polygon) == 1,
@@ -295,7 +284,7 @@ SUITE(cellsToLinkedMultiPolygon) {
         t_assert(countLinkedCoords(polygon.next->first) == 6,
                  "All coords for one hex added to second polygon");
 
-        H3_EXPORT(destroyLinkedMultiPolygon)(&polygon);
+        destroyLinkedMultiPolygon(&polygon);
     }
 
     TEST(specificLeak) {
@@ -304,7 +293,7 @@ SUITE(cellsToLinkedMultiPolygon) {
         LinkedGeoPolygon polygon;
         H3Index set[] = {0xd60006d60000f100, 0x3c3c403c1300d668};
         int numHexes = ARRAY_SIZE(set);
-        t_assert(H3_EXPORT(cellsToLinkedMultiPolygon)(set, numHexes,
+        t_assert(cellsToLinkedMultiPolygon(set, numHexes,
                                                       &polygon) == E_FAILED,
                  "invalid cells fail");
     }
@@ -320,12 +309,12 @@ SUITE(cellsToLinkedMultiPolygon) {
         for (int res = 1; res < 15; res++) {
             // Take the 2-disk of the center child at res
             t_assertSuccess(
-                H3_EXPORT(cellToCenterChild)(baseCell, res, &origin));
-            t_assertSuccess(H3_EXPORT(gridDisk)(origin, 2, indexes));
+                cellToCenterChild(baseCell, res, &origin));
+            t_assertSuccess(gridDisk(origin, 2, indexes));
 
             // Test the polygon output
             LinkedGeoPolygon polygon;
-            t_assertSuccess(H3_EXPORT(cellsToLinkedMultiPolygon)(
+            t_assertSuccess(cellsToLinkedMultiPolygon(
                 indexes, numHexes, &polygon));
             t_assert(countLinkedPolygons(&polygon) == 1, "1 polygon added");
             t_assert(countLinkedLoops(&polygon) == 1,
@@ -333,7 +322,7 @@ SUITE(cellsToLinkedMultiPolygon) {
             t_assert(countLinkedCoords(polygon.first) == 30,
                      "All coords for all hexes added to first loop");
 
-            H3_EXPORT(destroyLinkedMultiPolygon)(&polygon);
+            destroyLinkedMultiPolygon(&polygon);
         }
     }
 
@@ -350,9 +339,8 @@ SUITE(cellsToLinkedMultiPolygon) {
             // the 2-disk here, as increased distortion around the pentagon will
             // still fail at res 1. TODO: Use a 2-ring, start at res 0
             // when output is correct.
-            t_assertSuccess(
-                H3_EXPORT(cellToCenterChild)(baseCell, res, &origin));
-            t_assertSuccess(H3_EXPORT(gridDisk)(origin, 1, diskIndexes));
+            t_assertSuccess(cellToCenterChild(baseCell, res, &origin));
+            t_assertSuccess(gridDisk(origin, 1, diskIndexes));
 
             int j = 0;
             for (int i = 0; i < 7; i++) {
@@ -362,15 +350,14 @@ SUITE(cellsToLinkedMultiPolygon) {
 
             // Test the polygon output
             LinkedGeoPolygon polygon;
-            t_assertSuccess(
-                H3_EXPORT(cellsToLinkedMultiPolygon)(indexes, 6, &polygon));
+            t_assertSuccess(cellsToLinkedMultiPolygon(indexes, 6, &polygon));
             t_assert(countLinkedPolygons(&polygon) == 1, "1 polygon added");
             t_assert(countLinkedLoops(&polygon) == 1,
                      "1 loop on the first polygon");
             t_assert(countLinkedCoords(polygon.first) == 15,
                      "All coords for all hexes added to first loop");
 
-            H3_EXPORT(destroyLinkedMultiPolygon)(&polygon);
+            destroyLinkedMultiPolygon(&polygon);
         }
     }
 }

@@ -24,11 +24,11 @@ H3Index hex = 0x89283080ddbffff;
 BEGIN_BENCHMARKS();
 
 CellBoundary outBoundary;
-H3_EXPORT(originToDirectedEdges)(hex, edges);
+originToDirectedEdges(hex, edges);
 
 BENCHMARK(directedEdgeToBoundary, 10000, {
     for (int i = 0; i < 6; i++) {
-        H3_EXPORT(directedEdgeToBoundary)(edges[i], &outBoundary);
+        directedEdgeToBoundary(edges[i], &outBoundary);
     }
 });
 

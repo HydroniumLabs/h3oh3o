@@ -34,9 +34,9 @@
 
 static void assertExpected(H3Index h1, const LatLng *g1) {
     // convert lat/lng to H3 and verify
-    int res = H3_EXPORT(getResolution)(h1);
+    int res = getResolution(h1);
     H3Index h2;
-    t_assertSuccess(H3_EXPORT(latLngToCell)(g1, res, &h2));
+    t_assertSuccess(latLngToCell(g1, res, &h2));
     t_assert(h1 == h2, "got expected latLngToCell output");
 }
 
@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
             error("parsing input (should be \"H3Index lat lng\")");
 
         H3Index h3;
-        t_assertSuccess(H3_EXPORT(stringToH3)(h3Str, &h3));
+        t_assertSuccess(stringToH3(h3Str, &h3));
 
         LatLng coord;
         setGeoDegs(&coord, latDegs, lngDegs);

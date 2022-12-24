@@ -10,7 +10,7 @@ add_custom_target(benchmarks)
 
 macro(add_benchmark NAME SRCFILE)
     add_executable(${NAME} ${SRCFILE})
-    target_link_libraries(${NAME} PUBLIC h3oh3o::h3oh3o)
+    target_link_libraries(${NAME} PUBLIC h3oh3o::h3oh3o common)
     set_property(TARGET ${NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
 
     add_custom_target(bench_${NAME} COMMAND $<TARGET_FILE:${NAME}>)

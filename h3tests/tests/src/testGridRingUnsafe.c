@@ -24,11 +24,11 @@
 SUITE(gridRingUnsafe) {
     LatLng sf = {0.659966917655, 2 * 3.14159 - 2.1364398519396};
     H3Index sfHex;
-    t_assertSuccess(H3_EXPORT(latLngToCell)(&sf, 9, &sfHex));
+    t_assertSuccess(latLngToCell(&sf, 9, &sfHex));
 
     TEST(identityGridRing) {
         H3Index k0[] = {0};
-        t_assertSuccess(H3_EXPORT(gridRingUnsafe)(sfHex, 0, k0));
+        t_assertSuccess(gridRingUnsafe(sfHex, 0, k0));
         t_assert(k0[0] == sfHex, "generated identity k-ring");
     }
 
@@ -37,7 +37,7 @@ SUITE(gridRingUnsafe) {
         H3Index expectedK1[] = {0x89283080ddbffff, 0x89283080c37ffff,
                                 0x89283080c27ffff, 0x89283080d53ffff,
                                 0x89283080dcfffff, 0x89283080dc3ffff};
-        t_assertSuccess(H3_EXPORT(gridRingUnsafe)(sfHex, 1, k1));
+        t_assertSuccess(gridRingUnsafe(sfHex, 1, k1));
 
         for (int i = 0; i < 6; i++) {
             t_assert(k1[i] != 0, "index is populated");
@@ -58,7 +58,7 @@ SUITE(gridRingUnsafe) {
             0x89283080c23ffff, 0x89283080c2fffff, 0x89283080d5bffff,
             0x89283080d43ffff, 0x89283080d57ffff, 0x89283080d1bffff,
             0x89283080dc7ffff, 0x89283080dd7ffff, 0x89283080dd3ffff};
-        t_assertSuccess(H3_EXPORT(gridRingUnsafe)(sfHex, 2, k2));
+        t_assertSuccess(gridRingUnsafe(sfHex, 2, k2));
 
         for (int i = 0; i < 12; i++) {
             t_assert(k2[i] != 0, "index is populated");
@@ -75,14 +75,14 @@ SUITE(gridRingUnsafe) {
     TEST(nearPentagonRing1) {
         H3Index nearPentagon = 0x837405fffffffff;
         H3Index kp1[] = {0, 0, 0, 0, 0, 0};
-        t_assert(H3_EXPORT(gridRingUnsafe)(nearPentagon, 1, kp1) == E_PENTAGON,
+        t_assert(gridRingUnsafe(nearPentagon, 1, kp1) == E_PENTAGON,
                  "Should return an error when hitting a pentagon");
     }
 
     TEST(nearPentagonRing2) {
         H3Index nearPentagon = 0x837405fffffffff;
         H3Index kp2[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        t_assert(H3_EXPORT(gridRingUnsafe)(nearPentagon, 2, kp2) == E_PENTAGON,
+        t_assert(gridRingUnsafe(nearPentagon, 2, kp2) == E_PENTAGON,
                  "Should return an error when hitting a pentagon");
     }
 
@@ -90,7 +90,7 @@ SUITE(gridRingUnsafe) {
         H3Index nearPentagon;
         setH3Index(&nearPentagon, 0, 4, 0);
         H3Index kp2[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        t_assert(H3_EXPORT(gridRingUnsafe)(nearPentagon, 2, kp2) == E_PENTAGON,
+        t_assert(gridRingUnsafe(nearPentagon, 2, kp2) == E_PENTAGON,
                  "Should return an error when starting at a pentagon");
     }
 
@@ -101,9 +101,9 @@ SUITE(gridRingUnsafe) {
                 setH3Index(&bc, 0, i, 0);
                 int64_t childrenSz;
                 t_assertSuccess(
-                    H3_EXPORT(uncompactCellsSize)(&bc, 1, res, &childrenSz));
+                    uncompactCellsSize(&bc, 1, res, &childrenSz));
                 H3Index *children = calloc(childrenSz, sizeof(H3Index));
-                t_assertSuccess(H3_EXPORT(uncompactCells)(&bc, 1, children,
+                t_assertSuccess(uncompactCells(&bc, 1, children,
                                                           childrenSz, res));
 
                 for (int j = 0; j < childrenSz; j++) {
@@ -114,17 +114,17 @@ SUITE(gridRingUnsafe) {
                     for (int k = 0; k < 3; k++) {
                         int ringSz = k != 0 ? 6 * k : 1;
                         int64_t kSz;
-                        t_assertSuccess(H3_EXPORT(maxGridDiskSize)(k, &kSz));
+                        t_assertSuccess(maxGridDiskSize(k, &kSz));
 
                         H3Index *ring = calloc(ringSz, sizeof(H3Index));
                         H3Error failed =
-                            H3_EXPORT(gridRingUnsafe)(children[j], k, ring);
+                            gridRingUnsafe(children[j], k, ring);
 
                         if (!failed) {
                             H3Index *internalNeighbors =
                                 calloc(kSz, sizeof(H3Index));
                             int *internalDistances = calloc(kSz, sizeof(int));
-                            t_assertSuccess(H3_EXPORT(gridDiskDistancesSafe)(
+                            t_assertSuccess(gridDiskDistancesSafe(
                                 children[j], k, internalNeighbors,
                                 internalDistances));
 

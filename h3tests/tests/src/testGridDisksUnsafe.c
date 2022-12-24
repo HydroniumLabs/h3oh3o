@@ -22,7 +22,7 @@
 SUITE(gridDisksUnsafe) {
     LatLng sf = {0.659966917655, 2 * 3.14159 - 2.1364398519396};
     H3Index sfHex;
-    t_assertSuccess(H3_EXPORT(latLngToCell)(&sf, 9, &sfHex));
+    t_assertSuccess(latLngToCell(&sf, 9, &sfHex));
     H3Index *sfHexPtr = &sfHex;
 
     H3Index k1[] = {0x89283080ddbffff, 0x89283080c37ffff, 0x89283080c27ffff,
@@ -31,7 +31,7 @@ SUITE(gridDisksUnsafe) {
 
     TEST(identityGridDiskCells) {
         H3Index k0[] = {0};
-        t_assertSuccess(H3_EXPORT(gridDisksUnsafe)(sfHexPtr, 1, 0, k0));
+        t_assertSuccess(gridDisksUnsafe(sfHexPtr, 1, 0, k0));
 
         t_assert(k0[0] == sfHex, "generated identity k-ring");
     }
@@ -41,7 +41,7 @@ SUITE(gridDisksUnsafe) {
                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-        t_assertSuccess(H3_EXPORT(gridDisksUnsafe)(k1, 6, 1, allKrings));
+        t_assertSuccess(gridDisksUnsafe(k1, 6, 1, allKrings));
 
         for (int i = 0; i < 42; i++) {
             t_assert(allKrings[i] != 0, "index is populated");
@@ -55,7 +55,7 @@ SUITE(gridDisksUnsafe) {
 
     TEST(ring2of1) {
         H3Index *allKrings2 = calloc(6 * (1 + 6 + 12), sizeof(H3Index));
-        t_assertSuccess(H3_EXPORT(gridDisksUnsafe)(k1, 6, 2, allKrings2));
+        t_assertSuccess(gridDisksUnsafe(k1, 6, 2, allKrings2));
 
         for (int i = 0; i < (6 * (1 + 6 + 12)); i++) {
             t_assert(allKrings2[i] != 0, "index is populated");
@@ -71,14 +71,14 @@ SUITE(gridDisksUnsafe) {
 
     TEST(failed) {
         H3Index *allKrings = calloc(2 * (1 + 6), sizeof(H3Index));
-        t_assert(H3_EXPORT(gridDisksUnsafe)(withPentagon, 2, 1, allKrings) ==
+        t_assert(gridDisksUnsafe(withPentagon, 2, 1, allKrings) ==
                      E_PENTAGON,
                  "Expected error on gridDisksUnsafe");
         free(allKrings);
     }
 
     TEST(invalid_k) {
-        t_assert(H3_EXPORT(gridDisksUnsafe)(k1, 6, -1, NULL) == E_DOMAIN,
+        t_assert(gridDisksUnsafe(k1, 6, -1, NULL) == E_DOMAIN,
                  "gridDisksUnsafe invalid k");
     }
 }

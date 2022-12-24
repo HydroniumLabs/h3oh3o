@@ -15,7 +15,6 @@
  */
 #include "benchmark.h"
 #include "h3api.h"
-#include "vertex.h"
 
 // Fixtures. Cells are arbitrary, except that ring2 is all hexagons and
 // ring2Pent is centered on a pentagon.
@@ -42,21 +41,21 @@ BEGIN_BENCHMARKS();
 
 H3Index *vertexes = calloc(6, sizeof(H3Index));
 
-BENCHMARK(cellToVertexes, 10000, { H3_EXPORT(cellToVertexes)(hex, vertexes); });
+BENCHMARK(cellToVertexes, 10000, { cellToVertexes(hex, vertexes); });
 
 BENCHMARK(cellToVertexesPent, 10000, {
-    H3_EXPORT(cellToVertexes)(pentagon, vertexes);
+    cellToVertexes(pentagon, vertexes);
 });
 
 BENCHMARK(cellToVertexesRing, 10000, {
     for (int i = 0; i < ring2Count; i++) {
-        H3_EXPORT(cellToVertexes)(ring2[i], vertexes);
+        cellToVertexes(ring2[i], vertexes);
     }
 });
 
 BENCHMARK(cellToVertexesRingPent, 10000, {
     for (int i = 0; i < ring2PentCount; i++) {
-        H3_EXPORT(cellToVertexes)(ring2Pent[i], vertexes);
+        cellToVertexes(ring2Pent[i], vertexes);
     }
 });
 

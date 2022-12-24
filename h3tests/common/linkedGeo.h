@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, 2020-2021 Uber Technologies, Inc.
+ * Copyright 2017-2018, 2020-2021 Uber Technologies, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "benchmark.h"
+/** @file linkedGeo.h
+ * @brief   Linked data structure for geo data
+ */
+
+#ifndef LINKED_GEO_H
+#define LINKED_GEO_H
+
 #include "h3api.h"
-#include "latLng.h"
 
-// Fixtures (arbitrary res 9 hexagon)
-LatLng coord = {0.659966917655, -2.1364398519396};
-H3Index hex = 0x89283080ddbffff;
+int countLinkedPolygons(LinkedGeoPolygon *polygon);
+int countLinkedLoops(LinkedGeoPolygon *polygon);
+int countLinkedCoords(LinkedGeoLoop *loop);
 
-BEGIN_BENCHMARKS();
-
-LatLng outCoord;
-CellBoundary outBoundary;
-H3Index h;
-
-BENCHMARK(latLngToCell, 10000, { latLngToCell(&coord, 9, &h); });
-
-BENCHMARK(cellToLatLng, 10000, { cellToLatLng(hex, &outCoord); });
-
-BENCHMARK(cellToBoundary, 10000, { cellToBoundary(hex, &outBoundary); });
-
-END_BENCHMARKS();
+#endif

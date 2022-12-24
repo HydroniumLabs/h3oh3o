@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, 2020-2021 Uber Technologies, Inc.
+ * Copyright 2016-2017, 2020-2021 Uber Technologies, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "benchmark.h"
-#include "h3api.h"
+/** @file bbox.h
+ * @brief   Geographic bounding box functions
+ */
+
+#ifndef BBOX_H
+#define BBOX_H
+
 #include "latLng.h"
 
-// Fixtures (arbitrary res 9 hexagon)
-LatLng coord = {0.659966917655, -2.1364398519396};
-H3Index hex = 0x89283080ddbffff;
+H3Error lineHexEstimate(const LatLng *origin, const LatLng *destination,
+                        int res, int64_t *out);
 
-BEGIN_BENCHMARKS();
-
-LatLng outCoord;
-CellBoundary outBoundary;
-H3Index h;
-
-BENCHMARK(latLngToCell, 10000, { latLngToCell(&coord, 9, &h); });
-
-BENCHMARK(cellToLatLng, 10000, { cellToLatLng(hex, &outCoord); });
-
-BENCHMARK(cellToBoundary, 10000, { cellToBoundary(hex, &outBoundary); });
-
-END_BENCHMARKS();
+#endif

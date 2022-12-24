@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "algos.h"
 #include "benchmark.h"
 #include "h3api.h"
-#include "linkedGeo.h"
 
 // Fixtures
 H3Index ring2[] = {
@@ -44,19 +42,18 @@ BEGIN_BENCHMARKS();
 LinkedGeoPolygon polygon;
 
 BENCHMARK(cellsToLinkedMultiPolygonRing2, 10000, {
-    H3_EXPORT(cellsToLinkedMultiPolygon)(ring2, ring2Count, &polygon);
-    H3_EXPORT(destroyLinkedMultiPolygon)(&polygon);
+    cellsToLinkedMultiPolygon(ring2, ring2Count, &polygon);
+    destroyLinkedMultiPolygon(&polygon);
 });
 
 BENCHMARK(cellsToLinkedMultiPolygonDonut, 10000, {
-    H3_EXPORT(cellsToLinkedMultiPolygon)(donut, donutCount, &polygon);
-    H3_EXPORT(destroyLinkedMultiPolygon)(&polygon);
+    cellsToLinkedMultiPolygon(donut, donutCount, &polygon);
+    destroyLinkedMultiPolygon(&polygon);
 });
 
 BENCHMARK(cellsToLinkedMultiPolygonNestedDonuts, 10000, {
-    H3_EXPORT(cellsToLinkedMultiPolygon)
-    (nestedDonuts, nestedDonutsCount, &polygon);
-    H3_EXPORT(destroyLinkedMultiPolygon)(&polygon);
+    cellsToLinkedMultiPolygon(nestedDonuts, nestedDonutsCount, &polygon);
+    destroyLinkedMultiPolygon(&polygon);
 });
 
 END_BENCHMARKS();

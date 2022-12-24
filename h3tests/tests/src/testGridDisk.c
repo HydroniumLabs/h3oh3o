@@ -30,16 +30,16 @@
 static void gridDisk_equals_gridDiskDistancesSafe_assertions(H3Index h3) {
     for (int k = 0; k < 3; k++) {
         int64_t kSz;
-        t_assertSuccess(H3_EXPORT(maxGridDiskSize)(k, &kSz));
+        t_assertSuccess(maxGridDiskSize(k, &kSz));
 
         H3Index *neighbors = calloc(kSz, sizeof(H3Index));
         int *distances = calloc(kSz, sizeof(int));
         t_assertSuccess(
-            H3_EXPORT(gridDiskDistances)(h3, k, neighbors, distances));
+            gridDiskDistances(h3, k, neighbors, distances));
 
         H3Index *internalNeighbors = calloc(kSz, sizeof(H3Index));
         int *internalDistances = calloc(kSz, sizeof(int));
-        t_assertSuccess(H3_EXPORT(gridDiskDistancesSafe)(
+        t_assertSuccess(gridDiskDistancesSafe(
             h3, k, internalNeighbors, internalDistances));
 
         int found = 0;
@@ -79,7 +79,7 @@ SUITE(gridDisk) {
     TEST(gridDisk0) {
         LatLng sf = {0.659966917655, 2 * 3.14159 - 2.1364398519396};
         H3Index sfHex0;
-        t_assertSuccess(H3_EXPORT(latLngToCell)(&sf, 0, &sfHex0));
+        t_assertSuccess(latLngToCell(&sf, 0, &sfHex0));
 
         H3Index k1[] = {0, 0, 0, 0, 0, 0, 0};
         int k1Dist[] = {0, 0, 0, 0, 0, 0, 0};
@@ -87,7 +87,7 @@ SUITE(gridDisk) {
                                 0x8013fffffffffff, 0x8027fffffffffff,
                                 0x8049fffffffffff, 0x8051fffffffffff,
                                 0x8037fffffffffff};
-        t_assertSuccess(H3_EXPORT(gridDiskDistances)(sfHex0, 1, k1, k1Dist));
+        t_assertSuccess(gridDiskDistances(sfHex0, 1, k1, k1Dist));
 
         for (int i = 0; i < 7; i++) {
             t_assert(k1[i] != 0, "index is populated");
@@ -115,7 +115,7 @@ SUITE(gridDisk) {
                                 0x801ffffffffffff,
                                 0x8019fffffffffff,
                                 0};
-        t_assertSuccess(H3_EXPORT(gridDiskDistances)(polar, 1, k2, k2Dist));
+        t_assertSuccess(gridDiskDistances(polar, 1, k2, k2Dist));
 
         int k2present = 0;
         for (int i = 0; i < 7; i++) {
@@ -147,7 +147,7 @@ SUITE(gridDisk) {
                                 0x8108bffffffffff,
                                 0x8109bffffffffff,
                                 0};
-        t_assertSuccess(H3_EXPORT(gridDiskDistances)(polar, 1, k2, k2Dist));
+        t_assertSuccess(gridDiskDistances(polar, 1, k2, k2Dist));
 
         int k2present = 0;
         for (int i = 0; i < 7; i++) {
@@ -212,7 +212,7 @@ SUITE(gridDisk) {
         int expectedK2Dist[37] = {2, 3, 2, 1, 3, 3, 3, 2, 2, 3, 1, 3, 0,
                                   2, 3, 3, 2, 2, 3, 1, 3, 3, 2, 2, 3, 1,
                                   2, 3, 1, 3, 3, 0, 0, 0, 0, 0, 0};
-        t_assertSuccess(H3_EXPORT(gridDiskDistances)(polar, 3, k2, k2Dist));
+        t_assertSuccess(gridDiskDistances(polar, 3, k2, k2Dist));
 
         int k2present = 0;
         for (int i = 0; i < 37; i++) {
@@ -290,7 +290,7 @@ SUITE(gridDisk) {
                                   0x81137ffffffffff,
                                   0,
                                   0};
-        t_assertSuccess(H3_EXPORT(gridDiskDistances)(pent, 4, k2, k2Dist));
+        t_assertSuccess(gridDiskDistances(pent, 4, k2, k2Dist));
 
         int k2present = 0;
         for (int i = 0; i < 61; i++) {
@@ -412,9 +412,9 @@ SUITE(gridDisk) {
     TEST(gridDiskInvalid) {
         int k = 1000;
         int64_t kSz;
-        t_assertSuccess(H3_EXPORT(maxGridDiskSize)(k, &kSz));
+        t_assertSuccess(maxGridDiskSize(k, &kSz));
         H3Index *neighbors = calloc(kSz, sizeof(H3Index));
-        t_assert(H3_EXPORT(gridDisk)(0x7fffffffffffffff, k, neighbors) ==
+        t_assert(gridDisk(0x7fffffffffffffff, k, neighbors) ==
                      E_CELL_INVALID,
                  "gridDisk returns error for invalid input");
         free(neighbors);
@@ -423,9 +423,9 @@ SUITE(gridDisk) {
     TEST(gridDiskInvalidDigit) {
         int k = 2;
         int64_t kSz;
-        t_assertSuccess(H3_EXPORT(maxGridDiskSize)(k, &kSz));
+        t_assertSuccess(maxGridDiskSize(k, &kSz));
         H3Index *neighbors = calloc(kSz, sizeof(H3Index));
-        t_assert(H3_EXPORT(gridDisk)(0x4d4b00fe5c5c3030, k, neighbors) ==
+        t_assert(gridDisk(0x4d4b00fe5c5c3030, k, neighbors) ==
                      E_CELL_INVALID,
                  "gridDisk returns error for invalid input");
         free(neighbors);
@@ -434,25 +434,25 @@ SUITE(gridDisk) {
     TEST(gridDiskDistances_invalidK) {
         H3Index index = 0x811d7ffffffffff;
         t_assert(
-            H3_EXPORT(gridDiskDistances)(index, -1, NULL, NULL) == E_DOMAIN,
+            gridDiskDistances(index, -1, NULL, NULL) == E_DOMAIN,
             "gridDiskDistances invalid k");
-        t_assert(H3_EXPORT(gridDiskDistancesUnsafe)(index, -1, NULL, NULL) ==
+        t_assert(gridDiskDistancesUnsafe(index, -1, NULL, NULL) ==
                      E_DOMAIN,
                  "gridDiskDistancesUnsafe invalid k");
         t_assert(
-            H3_EXPORT(gridDiskDistancesSafe)(index, -1, NULL, NULL) == E_DOMAIN,
+            gridDiskDistancesSafe(index, -1, NULL, NULL) == E_DOMAIN,
             "gridDiskDistancesSafe invalid k");
     }
 
     TEST(maxGridDiskSize_invalid) {
         int64_t sz;
-        t_assert(H3_EXPORT(maxGridDiskSize)(-1, &sz) == E_DOMAIN,
+        t_assert(maxGridDiskSize(-1, &sz) == E_DOMAIN,
                  "negative k is invalid");
     }
 
     TEST(maxGridDiskSize_large) {
         int64_t sz;
-        t_assertSuccess(H3_EXPORT(maxGridDiskSize)(26755, &sz));
+        t_assertSuccess(maxGridDiskSize(26755, &sz));
         t_assert(sz == 2147570341, "large (> 32 bit signed int) k works");
     }
 
@@ -460,10 +460,10 @@ SUITE(gridDisk) {
         int64_t sz;
         int64_t prev = 0;
         int64_t max;
-        t_assertSuccess(H3_EXPORT(getNumCells)(15, &max));
+        t_assertSuccess(getNumCells(15, &max));
         // 13780510 will produce values above max
         for (int k = 13780510 - 100; k < 13780510 + 100; k++) {
-            t_assertSuccess(H3_EXPORT(maxGridDiskSize)(k, &sz));
+            t_assertSuccess(maxGridDiskSize(k, &sz));
             t_assert(sz <= max,
                      "maxGridDiskSize does not produce estimates above the "
                      "number of grid cells");
@@ -471,7 +471,7 @@ SUITE(gridDisk) {
             prev = sz;
         }
 
-        t_assertSuccess(H3_EXPORT(maxGridDiskSize)(INT32_MAX, &sz));
+        t_assertSuccess(maxGridDiskSize(INT32_MAX, &sz));
         t_assert(sz == max,
                  "maxGridDiskSize of INT32_MAX produces valid result");
     }

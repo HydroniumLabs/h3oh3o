@@ -12,5 +12,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(h3oh3o)
 
+add_subdirectory(common)
 add_subdirectory(tests)
 add_subdirectory(benchmarks)

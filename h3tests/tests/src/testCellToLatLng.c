@@ -37,15 +37,15 @@ void assertExpected(H3Index h1, const LatLng *g1) {
     const double epsilon = 0.000001 * M_PI_180;
     // convert H3 to lat/lng and verify
     LatLng g2;
-    H3_EXPORT(cellToLatLng)(h1, &g2);
+    cellToLatLng(h1, &g2);
 
     t_assert(geoAlmostEqualThreshold(&g2, g1, epsilon),
              "got expected cellToLatLng output");
 
     // Convert back to H3 to verify
-    int res = H3_EXPORT(getResolution)(h1);
+    int res = getResolution(h1);
     H3Index h2;
-    t_assertSuccess(H3_EXPORT(latLngToCell)(&g2, res, &h2));
+    t_assertSuccess(latLngToCell(&g2, res, &h2));
     t_assert(h1 == h2, "got expected latLngToCell output");
 }
 
@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
             error("parsing input (should be \"H3Index lat lng\")");
 
         H3Index h3;
-        t_assertSuccess(H3_EXPORT(stringToH3)(h3Str, &h3));
+        t_assertSuccess(stringToH3(h3Str, &h3));
 
         LatLng coord;
         setGeoDegs(&coord, latDegs, lngDegs);

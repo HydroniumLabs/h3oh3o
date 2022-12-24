@@ -29,13 +29,13 @@ CellArray pentagonSetup(int parentRes, int childRes, int nullEvery) {
     // every `nullEvery` indices.
     H3Index pParent = 0x80c3fffffffffff;  // res 0 pentagon
     H3Index p;
-    H3_EXPORT(cellToCenterChild)(pParent, parentRes, &p);
+    cellToCenterChild(pParent, parentRes, &p);
 
     CellArray ca;
 
-    H3_EXPORT(cellToChildrenSize)(p, childRes, &(ca.N));
+    cellToChildrenSize(p, childRes, &(ca.N));
     ca.cells = calloc(ca.N, sizeof(H3Index));
-    H3_EXPORT(cellToChildren)(p, childRes, ca.cells);
+    cellToChildren(p, childRes, ca.cells);
 
     if (nullEvery > 0) {
         // Note: `isValidCell` should return False on H3_NULL values.
@@ -50,7 +50,7 @@ CellArray pentagonSetup(int parentRes, int childRes, int nullEvery) {
 static inline void runValidation(const CellArray ca) {
     // Apply `isValidCell` to every element of `ca.cells`.
     for (int64_t i = 0; i < ca.N; i++) {
-        H3_EXPORT(isValidCell)(ca.cells[i]);
+        isValidCell(ca.cells[i]);
     }
 }
 
