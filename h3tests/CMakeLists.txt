@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 project(h3oh3o-tests)
 enable_testing()
 
-# Include the CH3O library, fetch it if not locally available.
+# Include the H3OH3O library, fetch it if not locally available.
 include(FetchContent)
 FetchContent_Declare(
     h3oh3o

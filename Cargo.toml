@@ -12,6 +12,7 @@ repository = "https://github.com/HydroniumLabs/h3oh3o"
 license = "BSD-3-Clause"
 keywords = ["geography", "geospatial", "gis", "h3", "spatial-index"]
 categories = ["science"]
+publish = false
 
 [package.metadata.release]
 pre-release-commit-message = "release {{version}}"

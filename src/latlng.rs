@@ -86,8 +86,8 @@ pub extern "C" fn greatCircleDistanceM(
 ///
 /// This function uses the Haversine formula.
 /// For math details, see:
-///     https://en.wikipedia.org/wiki/Haversine_formula
-///     https://www.movable-type.co.uk/scripts/latlong.html
+///     <https://en.wikipedia.org/wiki/Haversine_formula>
+///     `<https://www.movable-type.co.uk/scripts/latlong.html>`
 ///
 /// @param  a  the first lat/lng pair (in radians)
 /// @param  b  the second lat/lng pair (in radians)

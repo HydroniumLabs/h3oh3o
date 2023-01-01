@@ -94,7 +94,6 @@ impl From<h3o::error::LocalIjError> for H3Error {
                 H3ErrorCodes::EResMismatch
             }
             h3o::error::LocalIjError::Pentagon => H3ErrorCodes::EPentagon,
-            h3o::error::LocalIjError::HexGrid(_) => H3ErrorCodes::EFailed,
             _ => H3ErrorCodes::EFailed,
         }
         .into()

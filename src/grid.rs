@@ -55,10 +55,7 @@ pub unsafe extern "C" fn gridDisk(
     }
 
     // Get the expected size of the output variables.
-    let k = match u32::try_from(k) {
-        Ok(k) => k,
-        Err(_) => return H3ErrorCodes::EDomain.into(),
-    };
+    let Ok(k) = u32::try_from(k) else { return H3ErrorCodes::EDomain.into() };
     let size = h3o::max_grid_disk_size(k);
 
     // Convert pointers to slices.
@@ -135,10 +132,7 @@ pub unsafe extern "C" fn gridDiskDistances(
     }
 
     // Get the expected size of the output variables.
-    let k = match u32::try_from(k) {
-        Ok(k) => k,
-        Err(_) => return H3ErrorCodes::EDomain.into(),
-    };
+    let Ok(k) = u32::try_from(k) else { return H3ErrorCodes::EDomain.into() };
     let size = h3o::max_grid_disk_size(k);
 
     // Convert pointers to slices.
@@ -534,7 +528,7 @@ pub unsafe extern "C" fn gridRingUnsafe(
 }
 
 /// Maximum number of cells that result from the gridDisk algorithm with the
-/// given k. Formula source and proof: https://oeis.org/A003215
+/// given k. Formula source and proof: `<https://oeis.org/A003215>`
 ///
 /// @param   k   k value, k >= 0.
 /// @param out   size in indexes

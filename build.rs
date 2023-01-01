@@ -12,14 +12,14 @@ fn main() {
 
     cbindgen::generate_with_config(crate_dir, config)
         .expect("generate binding")
-        .write_to_file(&output_file);
+        .write_to_file(output_file);
 }
 
 fn target_dir() -> PathBuf {
-    if let Ok(target) = env::var("CH3O_EXPORT_DIR") {
+    if let Ok(target) = env::var("H3OH3O_EXPORT_DIR") {
         // Build through CMake.
         PathBuf::from(target)
     } else {
-        PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap()).join("target")
+        PathBuf::from(env::var("OUT_DIR").unwrap())
     }
 }

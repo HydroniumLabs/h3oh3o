@@ -1,5 +1,8 @@
 # h3oh3o — H3 on H3O
 
+[![CI Status](https://github.com/HydroniumLabs/h3oh3o/actions/workflows/ci.yml/badge.svg)](https://github.com/HydroniumLabs/h3oh3oh3o/actions)
+[![License](https://img.shields.io/badge/license-BSD-green)](https://opensource.org/licenses/BSD-3-Clause)
+
 ## Design
 
 This crate wraps the H3O library and expose a C API that can be used as a drop
@@ -25,7 +28,7 @@ To use `h3oh3o` as a C library in an external project, simply add the following
 snippet to your `CMakeLists.txt`
 
 ```cmake
-# Include the CH3O library, fetch it if not locally available.
+# Include the H3OH3O library, fetch it if not locally available.
 include(FetchContent)
 FetchContent_Declare(
     h3oh3o

@@ -30,7 +30,7 @@ add_library(${CRATE}::${CRATE} ALIAS ${CRATE})
 # Header generated with cbindgen.
 set(CODEGEN_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/gen/)
 # Pass the env var to cargo (for `build.rs`)
-corrosion_set_env_vars(${CRATE} "CH3O_EXPORT_DIR=${CODEGEN_OUTPUT_DIR}")
+corrosion_set_env_vars(${CRATE} "H3OH3O_EXPORT_DIR=${CODEGEN_OUTPUT_DIR}")
 
 # Add include directory for the generated header.
 target_include_directories(${CRATE}

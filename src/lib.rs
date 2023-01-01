@@ -220,7 +220,7 @@ pub unsafe extern "C" fn h3ToString(
         return H3ErrorCodes::EFailed.into();
     }
 
-    let string = format!("{:x}", h).into_bytes();
+    let string = format!("{h:x}").into_bytes();
     let slice = std::slice::from_raw_parts_mut(s, sz);
     slice[string.len()] = 0;
     for (i, ascii) in string.into_iter().enumerate() {
