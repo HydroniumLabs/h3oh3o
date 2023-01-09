@@ -7,7 +7,7 @@ include(FetchContent)
 FetchContent_Declare(
     h3oh3o
     # FIXME
-    GIT_REPOSITORY ssh://git@github.com/HydroniumLabs/h3oh3o.git
+    GIT_REPOSITORY https://github.com/HydroniumLabs/h3oh3o.git
     FIND_PACKAGE_ARGS
 )
 FetchContent_MakeAvailable(h3oh3o)
