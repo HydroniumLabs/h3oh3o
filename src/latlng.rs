@@ -14,8 +14,8 @@ pub struct LatLng {
 impl From<h3o::LatLng> for LatLng {
     fn from(value: h3o::LatLng) -> Self {
         Self {
-            lat: value.lat(),
-            lng: value.lng(),
+            lat: value.lat_radians(),
+            lng: value.lng_radians(),
         }
     }
 }
