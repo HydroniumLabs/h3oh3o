@@ -16,6 +16,8 @@ Possible sections are:
 
 ## [0.2.0] - 2023-01-15
 
+## [0.2.0] - 2023-01-15
+
 ### Changed
 
 - bump h3o
