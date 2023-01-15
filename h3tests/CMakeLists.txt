@@ -6,7 +6,7 @@ enable_testing()
 include(FetchContent)
 FetchContent_Declare(
     h3oh3o
-    # FIXME
+    # Insert here the tag of the targeted version
     GIT_REPOSITORY https://github.com/HydroniumLabs/h3oh3o.git
     FIND_PACKAGE_ARGS
 )

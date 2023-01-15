@@ -42,7 +42,7 @@ impl TryFrom<LatLng> for h3o::LatLng {
     type Error = H3Error;
 
     fn try_from(value: LatLng) -> Result<Self, Self::Error> {
-        Ok(Self::new(value.lat, value.lng)?)
+        Ok(Self::from_radians(value.lat, value.lng)?)
     }
 }
 
