@@ -14,6 +14,8 @@ Possible sections are:
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 
+## [0.2.1] - 2023-01-15
+
 ### Fixed
 
 - fix bug due to a missing git add
