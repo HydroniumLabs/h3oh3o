@@ -20,6 +20,7 @@ endmacro()
 
 add_benchmark(benchmarkCellsToLinkedMultiPolygon  benchmarkCellsToLinkedMultiPolygon.c)
 add_benchmark(benchmarkbenchmarkDirectedEdge benchmarkDirectedEdge.c)
+add_benchmark(benchmarkCellToChildren benchmarkCellToChildren.c)
 add_benchmark(benchmarkGridDiskCells benchmarkGridDiskCells.c)
 add_benchmark(benchmarkGridPathCells benchmarkGridPathCells.c)
 add_benchmark(benchmarkH3Api benchmarkH3Api.c)
