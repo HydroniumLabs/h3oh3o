@@ -137,7 +137,7 @@ mod vertex;
 // pub const H3O_VERSION_PATCH: u8 = h3o::VERSION_PATCH;
 
 pub const H3O_VERSION_MAJOR: u8 = 0;
-pub const H3O_VERSION_MINOR: u8 = 2;
+pub const H3O_VERSION_MINOR: u8 = 3;
 pub const H3O_VERSION_PATCH: u8 = 0;
 
 pub use boundary::{CellBoundary, MAX_CELL_BNDRY_VERTS};
