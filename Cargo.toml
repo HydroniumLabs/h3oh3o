@@ -1,6 +1,6 @@
 [package]
 name = "h3oh3o"
-version = "0.2.1"
+version = "0.3.0"
 authors = ["Sylvain Laperche <sylvain.laperche@gmail.com>"]
 edition = "2021"
 description = "An h3o wrapper that expose a C API compatible with h3."
