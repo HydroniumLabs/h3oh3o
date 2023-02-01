@@ -143,9 +143,9 @@ pub const H3O_VERSION_PATCH: u8 = 0;
 pub use boundary::{CellBoundary, MAX_CELL_BNDRY_VERTS};
 pub use cell::{
     cellAreaKm2, cellAreaM2, cellAreaRads2, cellToBoundary, cellToCenterChild,
-    cellToChildren, cellToChildrenSize, cellToLatLng, cellToParent,
-    getBaseCellNumber, getIcosahedronFaces, getResolution, isPentagon,
-    isValidCell, maxFaceCount,
+    cellToChildPos, cellToChildren, cellToChildrenSize, cellToLatLng,
+    cellToParent, childPosToCell, getBaseCellNumber, getIcosahedronFaces,
+    getResolution, isPentagon, isValidCell, maxFaceCount,
 };
 pub use compact::{compactCells, uncompactCells, uncompactCellsSize};
 pub use directed_edge::{

@@ -14,6 +14,10 @@ Possible sections are:
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 
+### Added
+
+- `cellToChildPos` and `childPosToCell`
+
 ### Changed
 
 - bump h3o

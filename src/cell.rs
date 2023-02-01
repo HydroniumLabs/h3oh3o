@@ -283,3 +283,52 @@ pub extern "C" fn maxFaceCount(
 
     delegate_inner!(inner(h3), out)
 }
+
+/// Returns the position of the cell within an ordered list of all children of
+/// the cell's parent at the specified resolution.
+#[no_mangle]
+pub extern "C" fn cellToChildPos(
+    child: H3Index,
+    parentRes: c_int,
+    out: Option<&mut i64>,
+) -> H3Error {
+    fn inner(child: H3Index, parentRes: c_int) -> Result<i64, H3Error> {
+        let index = CellIndex::try_from(child)
+            .map_err(|_| H3ErrorCodes::ECellInvalid)?;
+        let parent_res = convert::h3res_to_resolution(parentRes)?;
+        let position = index
+            .child_position(parent_res)
+            .ok_or(H3ErrorCodes::EResMismatch)?;
+        Ok(position.try_into().expect("overflow"))
+    }
+
+    delegate_inner!(inner(child, parentRes), out)
+}
+
+/// Returns the child cell at a given position within an ordered list of all
+/// children at the specified resolution.
+#[no_mangle]
+pub extern "C" fn childPosToCell(
+    childPos: i64,
+    parent: H3Index,
+    childRes: c_int,
+    out: Option<&mut H3Index>,
+) -> H3Error {
+    fn inner(
+        childPos: i64,
+        parent: H3Index,
+        childRes: c_int,
+    ) -> Result<H3Index, H3Error> {
+        let index = CellIndex::try_from(parent)
+            .map_err(|_| H3ErrorCodes::ECellInvalid)?;
+        let child_pos =
+            u64::try_from(childPos).map_err(|_| H3ErrorCodes::EDomain)?;
+        let child_res = convert::h3res_to_resolution(childRes)?;
+        let child = index
+            .child_at(child_pos, child_res)
+            .ok_or(H3ErrorCodes::EResMismatch)?;
+        Ok(child.into())
+    }
+
+    delegate_inner!(inner(childPos, parent, childRes), out)
+}
