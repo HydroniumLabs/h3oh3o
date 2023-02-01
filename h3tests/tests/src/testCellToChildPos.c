@@ -33,21 +33,19 @@ static void childPos_assertions(H3Index h3) {
         int childRes = parentRes + resolutionOffset;
         int64_t numChildren;
         t_assertSuccess(
-            H3_EXPORT(cellToChildrenSize)(h3, childRes, &numChildren));
+            cellToChildrenSize(h3, childRes, &numChildren));
 
         H3Index *children = calloc(numChildren, sizeof(H3Index));
-        t_assertSuccess(H3_EXPORT(cellToChildren)(h3, childRes, children));
+        t_assertSuccess(cellToChildren(h3, childRes, children));
 
         int64_t childPos;
         H3Index cell;
         for (int64_t i = 0; i < numChildren; i++) {
             // Test cellToChildPos
-            t_assertSuccess(
-                H3_EXPORT(cellToChildPos)(children[i], parentRes, &childPos));
+            t_assertSuccess(cellToChildPos(children[i], parentRes, &childPos));
             t_assert(childPos == i, "childPos matches iteration index");
             // Test childPosToCell
-            t_assertSuccess(
-                H3_EXPORT(childPosToCell)(childPos, h3, childRes, &cell));
+            t_assertSuccess(childPosToCell(childPos, h3, childRes, &cell));
             t_assert(cell == children[i], "cell matches expected");
         }
 
@@ -67,13 +65,13 @@ SUITE(cellToChildPos) {
         // random res 8 cell
         H3Index child = 0x88283080ddfffff;
         t_assert(
-            H3_EXPORT(cellToChildPos)(child, -1, &childPos) == E_RES_DOMAIN,
+            cellToChildPos(child, -1, &childPos) == E_RES_DOMAIN,
             "error matches expected for invalid res");
         t_assert(
-            H3_EXPORT(cellToChildPos)(child, 42, &childPos) == E_RES_DOMAIN,
+            cellToChildPos(child, 42, &childPos) == E_RES_DOMAIN,
             "error matches expected for invalid res");
         t_assert(
-            H3_EXPORT(cellToChildPos)(child, 9, &childPos) == E_RES_MISMATCH,
+            cellToChildPos(child, 9, &childPos) == E_RES_MISMATCH,
             "error matches expected for parent res finer than child");
     }
 
@@ -82,14 +80,11 @@ SUITE(cellToChildPos) {
         // random res 8 cell
         H3Index parent = 0x88283080ddfffff;
         int64_t childPos = 27;
-        t_assert(H3_EXPORT(childPosToCell)(childPos, parent, 42, &cell) ==
-                     E_RES_DOMAIN,
+        t_assert(childPosToCell(childPos, parent, 42, &cell) == E_RES_DOMAIN,
                  "error matches expected for invalid res");
-        t_assert(H3_EXPORT(childPosToCell)(childPos, parent, -1, &cell) ==
-                     E_RES_DOMAIN,
+        t_assert(childPosToCell(childPos, parent, -1, &cell) == E_RES_DOMAIN,
                  "error matches expected for invalid res");
-        t_assert(H3_EXPORT(childPosToCell)(childPos, parent, 7, &cell) ==
-                     E_RES_MISMATCH,
+        t_assert(childPosToCell(childPos, parent, 7, &cell) == E_RES_MISMATCH,
                  "error matches expected for child res coarser than parent");
     }
 
@@ -98,13 +93,13 @@ SUITE(cellToChildPos) {
         // random res 8 cell
         H3Index parent = 0x88283080ddfffff;
         int res = 10;
-        t_assert(H3_EXPORT(childPosToCell)(-1, parent, res, &cell) == E_DOMAIN,
+        t_assert(childPosToCell(-1, parent, res, &cell) == E_DOMAIN,
                  "error matches expected for negative childPos");
 
         // res is two steps down, so max valid child pos is 48
-        t_assert(H3_EXPORT(childPosToCell)(48, parent, res, &cell) == E_SUCCESS,
+        t_assert(childPosToCell(48, parent, res, &cell) == E_SUCCESS,
                  "No error for max valid child pos");
-        t_assert(H3_EXPORT(childPosToCell)(49, parent, res, &cell) == E_DOMAIN,
+        t_assert(childPosToCell(49, parent, res, &cell) == E_RES_MISMATCH,
                  "error matches expected for childPos greater than max");
     }
 
@@ -115,7 +110,7 @@ SUITE(cellToChildPos) {
 
         int64_t childPos;
         t_assert(
-            H3_EXPORT(cellToChildPos)(child, 0, &childPos) == E_CELL_INVALID,
+            cellToChildPos(child, 0, &childPos) == E_CELL_INVALID,
             "error matches expected for invalid cell");
     }
 
@@ -126,7 +121,7 @@ SUITE(cellToChildPos) {
 
         int64_t childPos;
         t_assert(
-            H3_EXPORT(cellToChildPos)(child, 0, &childPos) == E_CELL_INVALID,
+            cellToChildPos(child, 0, &childPos) == E_CELL_INVALID,
             "error matches expected for invalid cell");
     }
 
@@ -137,7 +132,7 @@ SUITE(cellToChildPos) {
 
         int64_t childPos;
         t_assert(
-            H3_EXPORT(cellToChildPos)(child, 0, &childPos) == E_CELL_INVALID,
+            cellToChildPos(child, 0, &childPos) == E_CELL_INVALID,
             "error matches expected for invalid cell");
     }
 }
