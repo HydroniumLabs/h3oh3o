@@ -1,6 +1,6 @@
 use crate::{convert, delegate_inner, H3Error, H3ErrorCodes, H3Index, LatLng};
 use geo_types::{Coord, LineString, MultiPolygon, Polygon};
-use h3o::geom::{Polygon as h3oPolygon, ToCells, ToGeo};
+use h3o::geom::{PolyfillConfig, Polygon as h3oPolygon, ToCells, ToGeo};
 use std::{ffi::c_int, ptr};
 
 /// Create a LinkedGeoPolygon describing the outline(s) of a set of  hexagons.
@@ -128,10 +128,10 @@ pub extern "C" fn maxPolygonToCellsSize(
 
         let resolution = convert::h3res_to_resolution(res)?;
         let polygon = Polygon::try_from(*geoPolygon)?;
-        let polygon = h3oPolygon::from_radians(&polygon)?;
+        let polygon = h3oPolygon::from_radians(polygon)?;
 
         Ok(polygon
-            .max_cells_count(resolution)
+            .max_cells_count(PolyfillConfig::new(resolution))
             .try_into()
             .expect("too many cells"))
     }
@@ -182,9 +182,10 @@ pub unsafe extern "C" fn polygonToCells(
         }
 
         let polygon = Polygon::try_from(*geoPolygon)?;
-        let polygon = h3oPolygon::from_radians(&polygon)?;
-        let len = polygon.max_cells_count(resolution);
-        let cells = polygon.to_cells(resolution);
+        let polygon = h3oPolygon::from_radians(polygon)?;
+        let config = PolyfillConfig::new(resolution);
+        let len = polygon.max_cells_count(config);
+        let cells = polygon.to_cells(config);
 
         let out = std::slice::from_raw_parts_mut(out, len);
         for (i, cell_index) in cells.enumerate() {

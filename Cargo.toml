@@ -1,6 +1,6 @@
 [package]
 name = "h3oh3o"
-version = "0.3.0"
+version = "0.3.1"
 authors = ["Sylvain Laperche <sylvain.laperche@gmail.com>"]
 edition = "2021"
 description = "An h3o wrapper that expose a C API compatible with h3."
@@ -23,7 +23,7 @@ pre-release-replacements = [
 ]
 
 [dependencies]
-h3o = { version = "0.3", default-features = false, features = ["geo"] }
+h3o = { version = "0.4", default-features = false, features = ["geo"] }
 geo-types = {version = "0.7", default-features = false }
 
 [build-dependencies]
