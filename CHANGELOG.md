@@ -14,6 +14,8 @@ Possible sections are:
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 
+## [0.3.1] - 2023-08-09
+
 ## [0.3.0] - 2023-02-01
 
 ### Added
