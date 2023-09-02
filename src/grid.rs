@@ -55,7 +55,9 @@ pub unsafe extern "C" fn gridDisk(
     }
 
     // Get the expected size of the output variables.
-    let Ok(k) = u32::try_from(k) else { return H3ErrorCodes::EDomain.into() };
+    let Ok(k) = u32::try_from(k) else {
+        return H3ErrorCodes::EDomain.into();
+    };
     let size = h3o::max_grid_disk_size(k);
 
     // Convert pointers to slices.
@@ -132,7 +134,9 @@ pub unsafe extern "C" fn gridDiskDistances(
     }
 
     // Get the expected size of the output variables.
-    let Ok(k) = u32::try_from(k) else { return H3ErrorCodes::EDomain.into() };
+    let Ok(k) = u32::try_from(k) else {
+        return H3ErrorCodes::EDomain.into();
+    };
     let size = h3o::max_grid_disk_size(k);
 
     // Convert pointers to slices.
