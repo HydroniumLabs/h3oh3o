@@ -366,7 +366,7 @@ impl From<Polygon> for LinkedGeoPolygon {
             next: ptr::null_mut(),
         };
         let (exterior, interiors) = value.into_inner();
-        let rings = std::iter::once(exterior).chain(interiors.into_iter());
+        let rings = std::iter::once(exterior).chain(interiors);
 
         // SAFETY: `last` is always set before being dereferenced.
         unsafe {
